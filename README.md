@@ -20,7 +20,7 @@ x64
 
 ![](images/poc1.png)
 
-2.inject beacon shellcode into target process
+2.Inject beacon shellcode into target process
 
 `ClipboardWindow-Inject <pid> <listener>`
 

@@ -1,0 +1,7 @@
+build:
+	@echo [+] Building ClipboardWindow-Inject...
+    	@cl /nologo /c /GS- "ClipboardWindow-Inject.c" /Fo"ClipboardWindow-Inject.x64.o" >NUL
+clean:
+	@echo [+] Cleaning Solution...
+	@del "ClipboardWindow-Inject.x64.o /Q
+

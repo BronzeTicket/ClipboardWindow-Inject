@@ -4,7 +4,7 @@
  */
 // Credits: https://github.com/rsmudge/CVE-2020-0796-BOF/blob/master/src/libc.c
 #include <stdio.h>
-#include <Windows.h>
+#include <windows.h>
 
 void mycopy(char* dst, const char* src, int size) {
 	int x;
